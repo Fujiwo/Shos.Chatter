@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <Copyright>Copyright © 2020 Fujio Kojima</Copyright>
+    <PackageProjectUrl>https://github.com/Fujiwo/Shos.Chatter</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Fujiwo/Shos.Chatter</RepositoryUrl>
+    <Authors>Fujio Kojima</Authors>
+    <Company>Sho's Software</Company>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>WebAPI,SignalR,Chat,WPF,WebClient</PackageTags>
+    <NeutralLanguage>en</NeutralLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Shos.Chatter.Server\Shos.Chatter.Server.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,290 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" message="IE=edge">
+    <meta name="viewport" message="width=device-width, initial-scale=1">
+    <meta name="Author" message="Fujiwo">
+    <meta name="Classification" message="">
+    <meta name="Description" message="">
+    <meta name="keywords" message="">
+    <title>Shos.Chatter | Sho's Software</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style>
+        h1 {
+            position: relative;
+            padding: 5px 5px 5px 42px;
+            background: #77c3df;
+            font-size: 20px;
+            color: white;
+            margin-left: -33px;
+            line-height: 1.3;
+            z-index: -1;
+        }
+
+            h1:before {
+                position: absolute;
+                message: '';
+                left: -2px;
+                top: -2px;
+                border: none;
+                border-left: solid 40px white;
+                border-bottom: solid 79px transparent;
+                z-index: -2
+            }
+    </style>
+</head>
+<body>
+    <p class="small">
+        <script type="text/javascript">
+            document.write("Last updated on " + document.lastModified + ".")
+        </script>
+    </p>
+
+    <h1>Shos.Chatter | Sho's Software</h1>
+
+    <hr>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a href="#users" class="nav-link active" data-toggle="tab">Users</a>
+        </li>
+        <li class="nav-item">
+            <a href="#chats" class="nav-link" data-toggle="tab">Chats</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="users" class="tab-pane active">
+            <form id="form">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">New User</span>
+                    </div>
+                    <input type="text" id="userName" placeholder="User Name" />
+                    <input type="button" id="addUserButton" value="Append" disabled="disabled" class="btn btn-primary" />
+                </div>
+
+                <table class="table table-striped table-sm">
+                    <thead>
+                        <tr><th>Name</th><th>Id</th><th></th><th></th></tr>
+                    </thead>
+                    <tbody id="userList"></tbody>
+                </table>
+            </form>
+        </div>
+
+        <div id="chats" class="tab-pane">
+            <form id="form">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">User Id</span>
+                    </div>
+                    <input type="text" id="userId" placeholder="User Id" class="text-right" />
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">New Chat</span>
+                    </div>
+                    <input type="text" id="chatMessage" placeholder="Message" />
+                    <input type="button" id="sendChatButton" value="Send" disabled="disabled" class="btn btn-primary" />
+                </div>
+
+                <table class="table table-striped table-sm">
+                    <thead>
+                        <tr><th>Message</th><th>UpdateDateTime</th><th>User Id</th><th></th><th></th></tr>
+                    </thead>
+                    <tbody id="chatList"></tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+
+    <hr>
+
+    <div>
+        <div><p>Copyright &copy; 2020 Sho's Software</p></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="js/signalr/signalr.js"></script>
+    <script>
+        "use strict";
+
+        function appendUser(chatterHub, userName) {
+            let user = { name: userName };
+
+            fetch('api/Users', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            })
+                .then(response => response.json())
+                .then(() => {
+                    chatterHub.invoke('UpdateUsers');
+                    $('#userName').val('');
+                })
+                .catch(error => console.error('appendUser: request failed.', error));
+        }
+
+        function sendChat(chatterHub, userId, chatMessage) {
+            let chat = { message: chatMessage, userId: userId };
+
+            fetch('api/Chats', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(chat)
+            })
+                .then(response => response.json())
+                .then(() => {
+                    chatterHub.invoke('UpdateChats');
+                    $('#chatMessage').val('');
+                })
+                .catch(error => console.error('sendChat: request failed.', error));
+        }
+
+        function updateUser(chatterHub, user) {
+            fetch(`api/Users/${user.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            })
+                .then(response => chatterHub.invoke('UpdateUsers'))
+                .catch(error => console.error('updateUser request failed.', error));
+        }
+
+        function deleteUser(chatterHub, user) {
+            fetch(`api/Users/${user.id}`, {
+                method: 'DELETE'
+            })
+                .then(() => chatterHub.invoke('UpdateUsers'))
+                .catch(error => console.error('deleteUser request failed.', error));
+        }
+
+        function updateChat(chatterHub, chat) {
+            fetch(`api/Chats/${chat.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(chat)
+            })
+                .then(response => chatterHub.invoke('UpdateChats'))
+                .catch(error => console.error('updateChat request failed.', error));
+        }
+
+        function deleteChat(chatterHub, chat) {
+            fetch(`api/Chats/${chat.id}`, {
+                method: 'DELETE'
+            })
+                .then(() => chatterHub.invoke('UpdateChats'))
+                .catch(error => console.error('deleteChats request failed.', error));
+        }
+
+        function fillUserList(chatterHub, userList) {
+            $('#userList').empty();
+            userList.forEach(function (user, index, array) {
+                let buttons = '<td><input type="button" id="updateUserButton' + String(user.id) + '" value="Update" class="btn btn-secondary btn-sm" />' +
+                    '<input type="button" id="deleteUserButton' + String(user.id) + '" value="Delete" class="btn btn-danger btn-sm" /></td>';
+                $('#userList').append('<tr><td><input type="text" id="userName' + String(user.id) + '" value="' + user.name + '" placeholder="User Name" /></td><td class="text-right">' + String(user.id) + '</td>' + buttons + '</tr>');
+
+                $('#updateUserButton' + String(user.id)).click(function () {
+                    let userName = $('#userName' + String(user.id)).val();
+                    user.Name = userName;
+                    updateUser(chatterHub, user);
+                });
+
+                $('#deleteUserButton' + String(user.id)).click(function () {
+                    deleteUser(chatterHub, user);
+                });
+            });
+        }
+
+        function fillChatList(chatterHub, chatList) {
+            $('#chatList').empty();
+            chatList.forEach(function (chat, index, array) {
+                let buttons = '<td><input type="button" id="updateChatButton' + String(chat.id) + '" value="Update" class="btn btn-secondary btn-sm" />' +
+                    '<input type="button" id="deleteChatButton' + String(chat.id) + '" value="Delete" class="btn btn-danger btn-sm" /></td>';
+                $('#chatList').append('<tr><td><input type="text" id="chatMessage' + String(chat.id) + '" value="' + chat.message + '" placeholder="Message" /></td><td>' + chat.updateDateTime + '</td><td class="text-right">' + String(chat.userId) + '</td>' + buttons + '</tr>');
+
+                $('#updateChatButton' + String(chat.id)).click(function () {
+                    let chatMessage = $('#chatMessage' + String(chat.id)).val();
+                    chat.message = chatMessage;
+                    updateChat(chatterHub, chat);
+                });
+
+                $('#deleteChatButton' + String(chat.id)).click(function () {
+                    deleteChat(chatterHub, chat);
+                });
+            });
+        }
+
+        function initializeUserList(chatterHub) {
+            fetch('api/Users')
+                .then(response => response.json())
+                .then(userList => fillUserList(chatterHub, userList))
+                .catch(error => console.error('initializeUserList: request failed.', error));
+        }
+
+        function initializeChatList(chatterHub) {
+            fetch('api/Chats')
+                .then(response => response.json())
+                .then(chatList => fillChatList(chatterHub, chatList))
+                .catch(error => console.error('initializeChatList: request failed.', error));
+        }
+
+        function initialize() {
+            var chatterHub = new signalR.HubConnectionBuilder().withUrl('/chatterhub').withAutomaticReconnect().build();
+
+            chatterHub.on('UpdateUsers', function () {
+                initializeUserList(chatterHub);
+            });
+            chatterHub.on('UpdateChats', function () {
+                initializeChatList(chatterHub);
+            });
+
+            $('#addUserButton').click(function () {
+                let userName = $('#userName').val().trim();
+                if (userName)
+                    appendUser(chatterHub, userName);
+            });
+
+            $('#sendChatButton').click(function () {
+                let chatMessage = $('#chatMessage').val().trim();
+                if (chatMessage) {
+                    let userId = Number($('#userId').val());
+                    sendChat(chatterHub, userId, chatMessage);
+                }
+            });
+
+            initializeUserList(chatterHub);
+            initializeChatList(chatterHub);
+
+            chatterHub.start().then(function () {
+                $('#addUserButton').prop('disabled', false);
+                $('#sendChatButton').prop('disabled', false);
+            }).catch(function (err) {
+                console.error(err.toString());
+            });
+        }
+
+        function main() {
+            initialize();
+        }
+
+        $(function () {
+            main();
+        })
+    </script>
+</body>
+</html>
