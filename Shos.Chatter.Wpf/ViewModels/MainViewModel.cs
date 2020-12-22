@@ -32,7 +32,7 @@ namespace Shos.Chatter.Wpf.ViewModels
                     return;
                 var name = (string)parameter;
                 if (!string.IsNullOrWhiteSpace(name))
-                    Model.Add(new Shos.Chatter.Server.Models.User { Name = name }).Wait();
+                    Model.Add(new Shos.Chatter.Server.Models.User { Name = name });
             }
         }
 
@@ -48,7 +48,7 @@ namespace Shos.Chatter.Wpf.ViewModels
                 var id = (int)parameter;
                 var user = Model.Users.FirstOrDefault(u => u.Id == id);
                 if (user is not null)
-                    Model.Update(user).Wait();
+                    Model.Update(user);
             }
         }
 
@@ -65,7 +65,7 @@ namespace Shos.Chatter.Wpf.ViewModels
                 var id = (int)parameter;
                 var user = Model.Users.FirstOrDefault(u => u.Id == id);
                 if (user is not null)
-                    Model.Delete(user).Wait();
+                    Model.Delete(user);
             }
         }
 
@@ -81,7 +81,7 @@ namespace Shos.Chatter.Wpf.ViewModels
 
                 var message = (string)parameter;
                 if (!string.IsNullOrWhiteSpace(message))
-                    Model.Add(new Shos.Chatter.Server.Models.Chat { Message = message }).Wait();
+                    Model.Add(new Shos.Chatter.Server.Models.Chat { Message = message });
             }
         }
 
@@ -98,7 +98,7 @@ namespace Shos.Chatter.Wpf.ViewModels
                 var id = (int)parameter;
                 var chat = Model.Chats.FirstOrDefault(c => c.Id == id);
                 if (chat is not null)
-                    Model.Update(chat).Wait();
+                    Model.Update(chat);
             }
         }
 
@@ -115,7 +115,7 @@ namespace Shos.Chatter.Wpf.ViewModels
                 var id = (int)parameter;
                 var chat = Model.Chats.FirstOrDefault(c => c.Id == id);
                 if (chat is not null)
-                    Model.Delete(chat).Wait();
+                    Model.Delete(chat);
             }
         }
 

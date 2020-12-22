@@ -44,12 +44,6 @@ namespace Shos.Chatter.Wpf.Models
 
         public async Task Start()
         {
-            Server.PropertyChanged += async (_, e) => {
-                if (e.PropertyName == nameof(Server.Url)) {
-                    await UpdateUsers();
-                    await UpdateChats();
-                }
-            };
             Server.UpdateUsers += async () => await UpdateUsers(false);
             Server.UpdateChats += async () => await UpdateChats(false);
             await Server.Start();
