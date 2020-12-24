@@ -5,15 +5,18 @@ using System.Windows.Input;
 
 namespace Shos.Chatter.Wpf.ViewModels
 {
-    public class MainViewModel : Shos.Chatter.Wpf.Models.BindableBase
+    using Models;
+    using Shos.Chatter.Server.Models;
+
+    public class MainViewModel : BindableBase
     {
         class CommandBase : ICommand
         {
             public event EventHandler? CanExecuteChanged;
 
-            protected Models.ChatterModel Model { get; private set; }
+            protected ChatterModel Model { get; private set; }
 
-            public CommandBase(Models.ChatterModel model) => Model = model;
+            public CommandBase(ChatterModel model) => Model = model;
 
             public virtual bool CanExecute(object? parameter) => true;
 
@@ -23,7 +26,7 @@ namespace Shos.Chatter.Wpf.ViewModels
 
         class AddUserCommandType : CommandBase
         {
-            public AddUserCommandType(Models.ChatterModel model) : base(model)
+            public AddUserCommandType(ChatterModel model) : base(model)
             {}
 
             public override void Execute(object? parameter)
@@ -32,13 +35,13 @@ namespace Shos.Chatter.Wpf.ViewModels
                     return;
                 var name = (string)parameter;
                 if (!string.IsNullOrWhiteSpace(name))
-                    Model.Add(new Shos.Chatter.Server.Models.User { Name = name });
+                    Model.Add(new User { Name = name });
             }
         }
 
         class UpdateUserCommandType : CommandBase
         {
-            public UpdateUserCommandType(Models.ChatterModel model) : base(model)
+            public UpdateUserCommandType(ChatterModel model) : base(model)
             { }
 
             public override void Execute(object? parameter)
@@ -54,7 +57,7 @@ namespace Shos.Chatter.Wpf.ViewModels
 
         class DeleteUserCommandType : CommandBase
         {
-            public DeleteUserCommandType(Models.ChatterModel model) : base(model)
+            public DeleteUserCommandType(ChatterModel model) : base(model)
             {}
 
             public override void Execute(object? parameter)
@@ -71,7 +74,7 @@ namespace Shos.Chatter.Wpf.ViewModels
 
         class AddChatCommandType : CommandBase
         {
-            public AddChatCommandType(Models.ChatterModel model) : base(model)
+            public AddChatCommandType(ChatterModel model) : base(model)
             { }
 
             public override void Execute(object? parameter)
@@ -81,13 +84,13 @@ namespace Shos.Chatter.Wpf.ViewModels
 
                 var message = (string)parameter;
                 if (!string.IsNullOrWhiteSpace(message))
-                    Model.Add(new Shos.Chatter.Server.Models.Chat { Message = message });
+                    Model.Add(new Chat { Message = message });
             }
         }
 
         class UpdateChatCommandType : CommandBase
         {
-            public UpdateChatCommandType(Models.ChatterModel model) : base(model)
+            public UpdateChatCommandType(ChatterModel model) : base(model)
             { }
 
             public override void Execute(object? parameter)
@@ -104,7 +107,7 @@ namespace Shos.Chatter.Wpf.ViewModels
 
         class DeleteChatCommandType : CommandBase
         {
-            public DeleteChatCommandType(Models.ChatterModel model) : base(model)
+            public DeleteChatCommandType(ChatterModel model) : base(model)
             { }
 
             public override void Execute(object? parameter)
@@ -119,7 +122,7 @@ namespace Shos.Chatter.Wpf.ViewModels
             }
         }
 
-        Shos.Chatter.Wpf.Models.ChatterModel model = new Shos.Chatter.Wpf.Models.ChatterModel();
+        ChatterModel model = new ChatterModel();
 
         public ICommand AddUserCommand    { get; private set; }
         public ICommand UpdateUserCommand { get; private set; }
@@ -149,7 +152,7 @@ namespace Shos.Chatter.Wpf.ViewModels
             set => model.UserId = value;
         }
 
-        public IEnumerable<Shos.Chatter.Server.Models.User> Users => model.Users;
-        public IEnumerable<Shos.Chatter.Server.Models.Chat> Chats => model.Chats;
+        public IEnumerable<User> Users => model.Users;
+        public IEnumerable<Chat> Chats => model.Chats;
     }
 }

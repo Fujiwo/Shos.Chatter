@@ -187,13 +187,10 @@ namespace Shos.Chatter.Wpf.Models
 
         async Task UpdateChats(bool notifyEnabled = false)
         {
-            var newChats = GetChats().Result;
-            if (chats is null || !newChats.SequenceEqual(chats)) {
-                chats = newChats;
-                RaisePropertyChanged(nameof(Chats));
-                if (notifyEnabled)
-                    await Server.NotifyUpdateChats();
-            }
+            chats = GetChats().Result;
+            RaisePropertyChanged(nameof(Chats));
+            if (notifyEnabled)
+                await Server.NotifyUpdateChats();
         }
     }
 
