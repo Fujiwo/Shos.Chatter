@@ -1,0 +1,9 @@
+@startuml
+!include .\\Shos.Chatter.Server\Program.puml
+!include .\\Shos.Chatter.Server\Startup.puml
+!include .\\Shos.Chatter.Server\Controllers\ChatsController.puml
+!include .\\Shos.Chatter.Server\Controllers\HomeController.puml
+!include .\\Shos.Chatter.Server\Controllers\UsersController.puml
+!include .\\Shos.Chatter.Server\Hubs\ChatterHub.puml
+!include .\\Shos.Chatter.Server\Models\ChatterContext.puml
+@enduml

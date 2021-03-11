@@ -1,0 +1,36 @@
+@startuml
+class ChatterModel {
+    userId : int = 1
+    + UserId : int <<get>> <<set>>
+    users : IEnumerable<Shos.Chatter.Server.Models.User>? = null
+    chats : IEnumerable<Shos.Chatter.Server.Models.Chat>? = null
+    + <<async>> Start() : Task
+    + <<async>> Add(user:Shos.Chatter.Server.Models.User) : Task<bool>
+    + <<async>> Delete(user:Shos.Chatter.Server.Models.User) : Task<bool>
+    + <<async>> Update(user:Shos.Chatter.Server.Models.User) : Task<bool>
+    + <<async>> Add(chat:Shos.Chatter.Server.Models.Chat) : Task<bool>
+    + <<async>> Delete(chat:Shos.Chatter.Server.Models.Chat) : Task<bool>
+    + <<async>> Update(chat:Shos.Chatter.Server.Models.Chat) : Task<bool>
+    <<async>> GetUsers() : Task<IEnumerable<Shos.Chatter.Server.Models.User>>
+    <<async>> GetChats() : Task<IEnumerable<Shos.Chatter.Server.Models.Chat>>
+    <<async>> UpdateUsers(notifyEnabled:bool) : Task
+    <<async>> UpdateChats(notifyEnabled:bool) : Task
+}
+class Server {
+    +  <<event>> UpdateUsers : Action? 
+    +  <<event>> UpdateChats : Action? 
+    hubConnection : HubConnection? = null
+    + Url : string <<get>>
+    + <<async>> NotifyUpdateUsers() : Task
+    + <<async>> NotifyUpdateChats() : Task
+    + <<async>> Start() : Task
+}
+class "IEnumerable`1"<T> {
+}
+BindableBase <|-- ChatterModel
+ChatterModel o-> "httpClient" HttpClient
+ChatterModel o-> "Server" Server
+ChatterModel --> "Users<Shos.Chatter.Server.Models.User>" "IEnumerable`1"
+ChatterModel --> "Chats<Shos.Chatter.Server.Models.Chat>" "IEnumerable`1"
+BindableBase <|-- Server
+@enduml

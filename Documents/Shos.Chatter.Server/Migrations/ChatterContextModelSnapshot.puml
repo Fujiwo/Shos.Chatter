@@ -1,0 +1,5 @@
+@startuml
+class ChatterContextModelSnapshot <<partial>> {
+}
+ModelSnapshot <|-- ChatterContextModelSnapshot
+@enduml

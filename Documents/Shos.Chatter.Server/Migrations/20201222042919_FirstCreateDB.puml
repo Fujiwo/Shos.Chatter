@@ -1,0 +1,5 @@
+@startuml
+class FirstCreateDB <<partial>> {
+}
+Migration <|-- FirstCreateDB
+@enduml

@@ -1,0 +1,11 @@
+@startuml
+class App <<partial>> {
+    <<const>> settingFileName : string = "appsettings.json"
+}
+class AppSettings {
+    + ServerUrl : string <<get>> <<set>> = ""
+}
+Application <|-- App
+App o-> "Settings" AppSettings
+App +-- AppSettings
+@enduml

@@ -1,0 +1,9 @@
+@startuml
+!include .\\Shos.Chatter.Wpf\App.xaml.puml
+!include .\\Shos.Chatter.Wpf\Models\BindableBase.puml
+!include .\\Shos.Chatter.Wpf\Models\ChatterModel.puml
+!include .\\Shos.Chatter.Wpf\ViewModels\DateTimeConverter.puml
+!include .\\Shos.Chatter.Wpf\ViewModels\MainViewModel.puml
+!include .\\Shos.Chatter.Wpf\Views\MainWindow.xaml.puml
+!include .\\Shos.Chatter.Wpf\Views\PlaceHolderBehavior.puml
+@enduml

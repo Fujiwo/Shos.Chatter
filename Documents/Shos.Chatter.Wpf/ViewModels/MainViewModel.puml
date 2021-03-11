@@ -1,0 +1,62 @@
+@startuml
+class MainViewModel {
+    + MainViewModel()
+    + UserId : int <<get>> <<set>>
+}
+class CommandBase {
+    +  <<event>> CanExecuteChanged : EventHandler? 
+    + CommandBase(model:ChatterModel)
+    + <<virtual>> CanExecute(parameter:object?) : bool
+    + <<virtual>> Execute(parameter:object?) : void
+}
+class AddUserCommandType {
+    + AddUserCommandType(model:ChatterModel)
+    + <<override>> Execute(parameter:object?) : void
+}
+class UpdateUserCommandType {
+    + UpdateUserCommandType(model:ChatterModel)
+    + <<override>> Execute(parameter:object?) : void
+}
+class DeleteUserCommandType {
+    + DeleteUserCommandType(model:ChatterModel)
+    + <<override>> Execute(parameter:object?) : void
+}
+class AddChatCommandType {
+    + AddChatCommandType(model:ChatterModel)
+    + <<override>> Execute(parameter:object?) : void
+}
+class UpdateChatCommandType {
+    + UpdateChatCommandType(model:ChatterModel)
+    + <<override>> Execute(parameter:object?) : void
+}
+class DeleteChatCommandType {
+    + DeleteChatCommandType(model:ChatterModel)
+    + <<override>> Execute(parameter:object?) : void
+}
+class "IEnumerable`1"<T> {
+}
+BindableBase <|-- MainViewModel
+MainViewModel o-> "model" ChatterModel
+MainViewModel --> "AddUserCommand" ICommand
+MainViewModel --> "UpdateUserCommand" ICommand
+MainViewModel --> "DeleteUserCommand" ICommand
+MainViewModel --> "AddChatCommand" ICommand
+MainViewModel --> "UpdateChatCommand" ICommand
+MainViewModel --> "DeleteChatCommand" ICommand
+MainViewModel --> "Users<User>" "IEnumerable`1"
+MainViewModel --> "Chats<Chat>" "IEnumerable`1"
+MainViewModel +-- CommandBase
+ICommand <|-- CommandBase
+MainViewModel +-- AddUserCommandType
+CommandBase <|-- AddUserCommandType
+MainViewModel +-- UpdateUserCommandType
+CommandBase <|-- UpdateUserCommandType
+MainViewModel +-- DeleteUserCommandType
+CommandBase <|-- DeleteUserCommandType
+MainViewModel +-- AddChatCommandType
+CommandBase <|-- AddChatCommandType
+MainViewModel +-- UpdateChatCommandType
+CommandBase <|-- UpdateChatCommandType
+MainViewModel +-- DeleteChatCommandType
+CommandBase <|-- DeleteChatCommandType
+@enduml

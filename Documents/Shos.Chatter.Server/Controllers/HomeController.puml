@@ -1,0 +1,6 @@
+@startuml
+class HomeController {
+    + Index() : IActionResult
+}
+Controller <|-- HomeController
+@enduml

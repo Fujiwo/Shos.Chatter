@@ -1,0 +1,23 @@
+@startuml
+class User {
+    + Id : int <<get>> <<set>>
+    + Name : string <<get>> <<set>> = ""
+    + HasDeleted : bool <<get>> <<set>> = false
+    + <<virtual>> Chats : ICollection<Chat>? <<get>> <<set>>
+}
+class Chat {
+    + Id : int <<get>> <<set>>
+    + Message : string <<get>> <<set>> = ""
+    + UserId : int <<get>> <<set>>
+    + <<virtual>> User : User? <<get>> <<set>>
+}
+class ChatterContext {
+    + ChatterContext(options:DbContextOptions)
+    + <<virtual>> Users : DbSet<User>? <<get>> <<set>>
+    + <<virtual>> Chats : DbSet<Chat>? <<get>> <<set>>
+}
+User --> "InsertDateTime" DateTime
+Chat --> "InsertDateTime" DateTime
+Chat --> "UpdateDateTime" DateTime
+DbContext <|-- ChatterContext
+@enduml

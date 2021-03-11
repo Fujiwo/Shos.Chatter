@@ -1,0 +1,7 @@
+@startuml
+class ChatterHub {
+    + <<async>> UpdateUsers() : Task
+    + <<async>> UpdateChats() : Task
+}
+Hub <|-- ChatterHub
+@enduml

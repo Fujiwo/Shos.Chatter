@@ -9,7 +9,7 @@ namespace Shos.Chatter.Wpf.Models
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
+        protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string? propertyName = null)
         {
             if (EqualityComparer<T>.Default.Equals(storage, value))
                 return false;
@@ -19,7 +19,7 @@ namespace Shos.Chatter.Wpf.Models
             return true;
         }
 
-        protected virtual bool SetProperty<T>(ref T storage, T value, Action onChanged, [CallerMemberName] string propertyName = null)
+        protected virtual bool SetProperty<T>(ref T storage, T value, Action onChanged, [CallerMemberName] string? propertyName = null)
         {
             if (EqualityComparer<T>.Default.Equals(storage, value))
                 return false;

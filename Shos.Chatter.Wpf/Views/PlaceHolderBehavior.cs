@@ -29,11 +29,11 @@ namespace Shos.Chatter.Wpf.Views
             }
         }
 
-        static TextChangedEventHandler CreateEventHandler(string placeHolder)
+        static TextChangedEventHandler CreateEventHandler(string? placeHolder)
             => (sender, e) => ((TextBox)sender).Background = string.IsNullOrEmpty(((TextBox)sender).Text) ? (Brush)CreateVisualBrush(placeHolder)
                                                                                                           : new SolidColorBrush(Colors.Transparent);
 
-        static VisualBrush CreateVisualBrush(string placeHolder)
+        static VisualBrush CreateVisualBrush(string? placeHolder)
             => new VisualBrush(
                 new Label() {
                     Content             = placeHolder,

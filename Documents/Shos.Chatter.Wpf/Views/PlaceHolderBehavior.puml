@@ -1,0 +1,10 @@
+@startuml
+class PlaceHolderBehavior <<static>> {
+    {static} OnPlaceHolderChanged(sender:DependencyObject, e:DependencyPropertyChangedEventArgs) : void
+    {static} CreateEventHandler(placeHolder:string?) : TextChangedEventHandler
+    {static} CreateVisualBrush(placeHolder:string?) : VisualBrush
+    + {static} SetPlaceHolderText(textBox:TextBox, placeHolder:string) : void
+    + {static} GetPlaceHolderText(textBox:TextBox) : string?
+}
+PlaceHolderBehavior o-> "PlaceHolderTextProperty" DependencyProperty
+@enduml

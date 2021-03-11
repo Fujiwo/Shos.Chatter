@@ -1,0 +1,14 @@
+@startuml
+class ChatsController {
+    + ChatsController(context:ChatterContext)
+    + <<async>> GetChats() : Task<ActionResult<IEnumerable<Chat>>>
+    + <<async>> GetChat(id:int) : Task<ActionResult<Chat>>
+    + <<async>> PutChat(id:int, chat:Chat) : Task<IActionResult>
+    + <<async>> PostChat(chat:Chat) : Task<ActionResult<Chat>>
+    + <<async>> DeleteChat(id:int) : Task<ActionResult<Chat>>
+    ChatExists(id:int) : bool
+    UserExists(id:int) : bool
+}
+ControllerBase <|-- ChatsController
+ChatsController --> "context" ChatterContext
+@enduml

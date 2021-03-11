@@ -1,0 +1,13 @@
+@startuml
+class UsersController {
+    + UsersController(context:ChatterContext)
+    + <<async>> GetUsers() : Task<ActionResult<IEnumerable<User>>>
+    + <<async>> GetUser(id:int) : Task<ActionResult<User>>
+    + <<async>> PutUser(id:int, user:User) : Task<IActionResult>
+    + <<async>> PostUser(user:User) : Task<ActionResult<User>>
+    + <<async>> DeleteUser(id:int) : Task<ActionResult<User>>
+    UserExists(id:int) : bool
+}
+ControllerBase <|-- UsersController
+UsersController --> "context" ChatterContext
+@enduml
